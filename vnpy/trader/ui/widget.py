@@ -13,6 +13,7 @@ from tzlocal import get_localzone_name
 import importlib_metadata
 
 from .qt import QtCore, QtGui, QtWidgets
+from .. import ui
 from ..constant import Direction, Exchange, Offset, OrderType
 from ..engine import MainEngine, Event, EventEngine
 from ..event import (
@@ -520,7 +521,6 @@ class PositionMonitor(BaseMonitor):
         "pnl": {"display": _("盈亏"), "cell": PnlCell, "update": True},
         "gateway_name": {"display": _("接口"), "cell": BaseCell, "update": False},
     }
-
 
 class AccountMonitor(BaseMonitor):
     """
@@ -1165,22 +1165,16 @@ class AboutDialog(QtWidgets.QDialog):
 
     def init_ui(self) -> None:
         """"""
-        self.setWindowTitle(_("关于VeighNa Trader"))
+        self.setWindowTitle(_("关于Venus Trader"))
 
         from ... import __version__ as vnpy_version
 
         text: str = f"""
-            By Traders, For Traders.
+            Venus Trader v{ui.__version__} For My Friends.
+            Created by Henry LIU
+            License: All rights reserved. Proprietary license.
 
-            Created by VeighNa Technology
-
-
-            License：MIT
-            Website：www.vnpy.com
-            Github：www.github.com/vnpy/vnpy
-
-
-            VeighNa - {vnpy_version}
+            vnpy - {vnpy_version}
             Python - {platform.python_version()}
             PySide6 - {importlib_metadata.version("pyside6")}
             NumPy - {importlib_metadata.version("numpy")}

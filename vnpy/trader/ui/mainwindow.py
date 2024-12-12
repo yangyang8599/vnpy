@@ -27,6 +27,7 @@ from .widget import (
     AboutDialog,
     GlobalDialog
 )
+from .. import ui
 from ..engine import MainEngine, BaseApp
 from ..utility import get_icon_path, TRADER_DIR
 from ..locale import _
@@ -44,7 +45,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.main_engine: MainEngine = main_engine
         self.event_engine: EventEngine = event_engine
 
-        self.window_title: str = _("VeighNa Trader 社区版 - {}   [{}]").format(vnpy.__version__, TRADER_DIR)
+        self.window_title: str = _("Venus Trader - {}   [{}]").format(ui.__version__, TRADER_DIR)
 
         self.widgets: Dict[str, QtWidgets.QWidget] = {}
         self.monitors: Dict[str, BaseMonitor] = {}
@@ -161,14 +162,14 @@ class MainWindow(QtWidgets.QMainWindow):
             get_icon_path(__file__, "email.ico"),
             self.send_test_email
         )
-
-        self.add_action(
-            help_menu,
-            _("社区论坛"),
-            get_icon_path(__file__, "forum.ico"),
-            self.open_forum,
-            True
-        )
+        #
+        # self.add_action(
+        #     help_menu,
+        #     _("社区论坛"),
+        #     get_icon_path(__file__, "forum.ico"),
+        #     self.open_forum,
+        #     True
+        # )
 
         self.add_action(
             help_menu,
@@ -313,12 +314,12 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         Sending a test email.
         """
-        self.main_engine.send_email("VeighNa Trader", "testing")
+        self.main_engine.send_email("Venus Trader", "testing")
 
-    def open_forum(self) -> None:
-        """
-        """
-        webbrowser.open("https://www.vnpy.com/forum/")
+    # def open_forum(self) -> None:
+    #     """
+    #     """
+    #     webbrowser.open("https://www.vnpy.com/forum/")
 
     def edit_global_setting(self) -> None:
         """

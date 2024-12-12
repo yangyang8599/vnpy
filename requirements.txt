@@ -6,9 +6,16 @@ numpy==1.26.4
 pandas==2.2.1
 matplotlib==3.8.3
 seaborn==0.13.2
-ta-lib==0.4.24
+ta-lib==0.4.32
 deap==1.4.1
 pyzmq==25.1.2
 plotly==5.20.0
 importlib-metadata==7.0.2
 tqdm==4.66.2
+
+vnpy_ctp==6.7.2.0
+vnpy-ctabacktester==1.1.6
+vnpy-ctastrategy==1.2.0
+vnpy_sqlite==1.0.1
+vnpy_tushare==1.4.7.0
+vnpy_xtp==2.2.32.2.2
