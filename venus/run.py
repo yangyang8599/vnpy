@@ -1,6 +1,7 @@
 from vnpy_xtp import XtpGateway
 
 import venus
+from venus.insight_center import InsightCenterApp
 from vnpy.event import EventEngine
 from vnpy.trader.engine import MainEngine
 from vnpy.trader.ui import MainWindow, create_qapp
@@ -22,6 +23,7 @@ def main():
     main_engine.add_gateway(XtpGateway)
     main_engine.add_app(CtaStrategyApp)
     main_engine.add_app(CtaBacktesterApp)
+    main_engine.add_app(InsightCenterApp)
 
     main_window = MainWindow(main_engine, event_engine)
     main_window.showMaximized()

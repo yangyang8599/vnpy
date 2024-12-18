@@ -2,6 +2,8 @@ from typing import Dict, List, Tuple
 from datetime import datetime
 from _collections_abc import dict_keys
 
+import pandas as pd
+
 from vnpy.trader.object import BarData
 
 from .base import to_int
@@ -169,3 +171,17 @@ class BarManager:
         self._index_datetime_map.clear()
 
         self._clear_cache()
+
+    def get_precomputed_ma(self, window: int) -> List[float]:
+        """
+        获取预计算的移动平均线数据
+
+        :param window: 移动平均窗口大小
+        :return: 移动平均值列表
+        """
+        close_prices = [bar.close_price for bar in self.get_all_bars()]
+        if len(close_prices) < window:
+            return []
+        df = pd.DataFrame({'close': close_prices})
+        ma_series = df['close'].rolling(window=window).mean().tolist()
+        return ma_series

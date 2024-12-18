@@ -145,8 +145,8 @@ class ChartItem(pg.GraphicsObject):
                 bar: BarData = self._manager.get_bar(ix)
                 bar_picture = self._draw_bar_picture(ix, bar)
                 self._bar_picutures[ix] = bar_picture
-
-            bar_picture.play(painter)
+            if bar_picture:
+                bar_picture.play(painter)
 
         painter.end()
 
