@@ -4,7 +4,6 @@ from typing import List, Dict, Type
 
 import pyqtgraph as pg
 
-from venus.ui.ma_chart_item import MovingAverageItem
 from vnpy.trader.ui import QtGui, QtWidgets, QtCore
 from vnpy.trader.object import BarData
 
@@ -44,7 +43,7 @@ class ChartWidget(pg.PlotWidget):
 
     def _init_ui(self) -> None:
         """"""
-        self.setWindowTitle("ChartWidget of VeighNa")
+        self.setWindowTitle("ChartWidget of Venus")
 
         self._layout: pg.GraphicsLayout = pg.GraphicsLayout()
         self._layout.setContentsMargins(10, 10, 10, 10)
@@ -145,7 +144,7 @@ class ChartWidget(pg.PlotWidget):
 
     def clear_all(self) -> None:
         """
-        清除所有数据，包括均线。
+        Clear all data.
         """
         self._manager.clear_all()
 
@@ -154,12 +153,6 @@ class ChartWidget(pg.PlotWidget):
 
         if self._cursor:
             self._cursor.clear_all()
-
-        # 清除所有 PlotDataItem（如均线）
-        for plot in self._plots.values():
-            for child in plot.items.copy():
-                if isinstance(child, pg.PlotDataItem):
-                    plot.removeItem(child)
 
     def update_history(self, history: List[BarData]) -> None:
         """
@@ -174,7 +167,6 @@ class ChartWidget(pg.PlotWidget):
 
         self.move_to_right()
         ma_values = self._manager.get_precomputed_ma(window=3)
-
         self._plots['candle'].plot(range(0,len(ma_values)), ma_values, pen=pg.mkPen(color='b', width=2), name='Sine Wave')
 
     def update_bar(self, bar: BarData) -> None:
@@ -228,8 +220,7 @@ class ChartWidget(pg.PlotWidget):
         # Update limit for y-axis
         for item, plot in self._item_plot_map.items():
             y_range: tuple = item.get_y_range(min_ix, max_ix)
-            if not math.isnan(y_range[0]):
-                plot.setRange(yRange=y_range)
+            plot.setRange(yRange=y_range)
 
     def paintEvent(self, event: QtGui.QPaintEvent) -> None:
         """
@@ -314,41 +305,6 @@ class ChartWidget(pg.PlotWidget):
         self._right_ix = self._manager.get_count()
         self._update_x_range()
         self._cursor.update_info()
-
-    def add_moving_average(self, window: int = 5, color: str = "r") -> None:
-        """
-        添加移动平均线（MA）到指定的 PlotItem 上。
-
-        :param window: 均线的窗口期，例如20表示20日均线。
-        :param color: 均线颜色。
-        """
-        ma_item = MovingAverageItem(self._manager, window=window, color=color)
-        self.add_item_instance(ma_item, "candle")  # 将均线添加到 "candle" plot 上
-
-    def add_item_instance(self, item: ChartItem, plot_name: str) -> None:
-        """
-        添加已实例化的 ChartItem 对象。
-
-        :param item: ChartItem 实例。
-        :param plot_name: 关联的 plot 名称。
-        """
-        # 为每个 item 提供一个唯一的名称作为 key
-        if isinstance(item, MovingAverageItem):
-            item_key = f"MA_{item.window}"
-        else:
-            item_key = item.__class__.__name__
-
-        self._items[item_key] = item
-
-        plot: pg.PlotItem = self._plots.get(plot_name)
-        if plot:
-            if isinstance(item, MovingAverageItem):
-                # 对于 MovingAverageItem，直接添加其 PlotDataItem
-                plot.addItem(item.plot_data_item)
-            else:
-                # 对于其他 ChartItem，添加整个 item
-                plot.addItem(item)
-            self._item_plot_map[item] = plot
 
 
 class ChartCursor(QtCore.QObject):
